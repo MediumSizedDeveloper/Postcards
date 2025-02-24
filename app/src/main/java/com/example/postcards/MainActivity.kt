@@ -1,26 +1,41 @@
-package com.example.postcards
+package com.example.postcard
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.postcards.ui.theme.PostcardsTheme
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.postcard.ui.theme.PostcardTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            PostcardsTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-
+            PostcardTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    GreetingImage(message = "Hello from CSI!", from = "From Professor Tooker")
                 }
             }
         }
@@ -28,16 +43,48 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun GreetingText(message: String, modifier: Modifier = Modifier){
-    Text(
-        text = message
-    )
+fun GreetingText(message: String, from: String, modifier: Modifier = Modifier) {
+    Column (
+        verticalArrangement = Arrangement.Center,
+        modifier = modifier.padding(8.dp)
+    ) {
+        Text(
+            text = message,
+            fontSize = 100.sp,
+            lineHeight = 116.sp,
+            color = Color.Blue,
+            textAlign = TextAlign.Center
+        )
+        Text(
+            text = from,
+            fontSize = 36.sp,
+            lineHeight = 45.sp
+        )
+    }
 }
 
-@Preview(showBackground = true) //can be set to false
 @Composable
-fun PostcardPreview(){
-    PostcardsTheme(){
-        GreetingText(message = "Hello IJEBGQOEUNG")
+fun GreetingImage(message: String, from: String, modifier: Modifier = Modifier) {
+    val image = painterResource(R.drawable.csi_horizontal)
+    Box(modifier) {
+        Image(
+            painter = image,
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            alpha = 0.5f
+        )
+        GreetingText(
+            message = message,
+            from = from,
+            modifier = Modifier.fillMaxSize().padding(8.dp)
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PostCardPreview() {
+    PostcardTheme {
+        GreetingImage(message = "Hello from CSI!", from = "From Professor Tooker")
     }
 }
